@@ -4,7 +4,7 @@ import { FaBtc, FaSignOutAlt } from 'react-icons/fa';
 import { RoutePath } from '../../router/routerConfig';
 
 const Header: FC = () => {
-  const isAuth = true;
+  const isAuth = false;
   return (
     <header className="flex items-center bg-slate-800 p-4 shadow-sm backdrop-blur-sm">
       <Link to="/">
@@ -58,7 +58,7 @@ const Header: FC = () => {
           to={RoutePath.auth}
           className="ml-auto py-2 text-white/50 hover:text-white"
         >
-          Войти
+          Зарегистрироваться / Войти
         </Link>
       )}
     </header>
