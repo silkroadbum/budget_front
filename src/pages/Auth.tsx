@@ -1,11 +1,36 @@
-import { ChangeEvent, FC, useState } from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
+import { IUserData } from '../types/types';
+import { AuthService } from '../services/auth.service';
+import { toast } from 'react-toastify';
 
 const Auth: FC = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<IUserData>({
     email: '',
     password: '',
   });
   const [isLogin, setIsLogin] = useState(false);
+
+  const registrationHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    try {
+      e.preventDefault();
+      const data = await AuthService.registration(formData);
+      if (data) {
+        toast.success('Аккаунт создан.');
+        setIsLogin(!isLogin);
+      }
+    } catch (err: any) {
+      const error = err.response?.data?.message;
+      toast.error(error.toString());
+    }
+  };
+
+  const loginHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    try {
+    } catch (err: any) {
+      const error = err.response?.data?.message;
+      toast.error(error.toString());
+    }
+  };
 
   const handleChangeInput = (evt: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = evt.target;
@@ -17,7 +42,10 @@ const Auth: FC = () => {
       <h1 className="mb-10 text-center text-xl">
         {isLogin ? 'Авторизация' : 'Регистрация'}
       </h1>
-      <form className="mx-auto flex w-1/3 flex-col gap-5">
+      <form
+        className="mx-auto flex w-1/3 flex-col gap-5"
+        onSubmit={isLogin ? loginHandler : registrationHandler}
+      >
         <input
           type="text"
           className="input"
@@ -35,7 +63,7 @@ const Auth: FC = () => {
           onChange={handleChangeInput}
         />
 
-        <button className="btn btn-green mx-auto">
+        <button className="btn btn-green mx-auto" type="submit">
           {isLogin ? 'Войти' : 'Зарегистрироваться'}
         </button>
       </form>
