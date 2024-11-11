@@ -2,6 +2,11 @@ import React, { ChangeEvent, FC, useState } from 'react';
 import { IUserData } from '../types/types';
 import { AuthService } from '../services/auth.service';
 import { toast } from 'react-toastify';
+import { setTokenToLocalStorage } from '../helpers/localStorage.helper';
+import { useAppDispatch } from '../store/hooks';
+import { login } from '../store/user/userSlice';
+import { useNavigate } from 'react-router-dom';
+import { RoutePath } from '../router/routerConfig';
 
 const Auth: FC = () => {
   const [formData, setFormData] = useState<IUserData>({
@@ -9,6 +14,8 @@ const Auth: FC = () => {
     password: '',
   });
   const [isLogin, setIsLogin] = useState(false);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const registrationHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
@@ -26,6 +33,14 @@ const Auth: FC = () => {
 
   const loginHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
+      e.preventDefault();
+      const data = await AuthService.login(formData);
+      if (data) {
+        setTokenToLocalStorage('token', data.token);
+        dispatch(login(data));
+        toast.success('Вы авторизовались.');
+        navigate(RoutePath.home);
+      }
     } catch (err: any) {
       const error = err.response?.data?.message;
       toast.error(error.toString());
