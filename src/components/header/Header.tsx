@@ -4,7 +4,7 @@ import { FaBtc, FaSignOutAlt } from 'react-icons/fa';
 import { RoutePath } from '../../router/routerConfig';
 
 const Header: FC = () => {
-  const isAuth = false;
+  const isAuth = true;
   return (
     <header className="flex items-center bg-slate-800 p-4 shadow-sm backdrop-blur-sm">
       <Link to="/">
