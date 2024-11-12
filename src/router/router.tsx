@@ -6,6 +6,7 @@ import Transactions from '../pages/Transactions';
 import Categories from '../pages/Categories';
 import Auth from '../pages/Auth';
 import { RoutePath } from './routerConfig';
+import { ProtectedRoute } from '../components/protectedRoute/ProtectedRoute';
 
 export const router = createBrowserRouter([
   {
@@ -19,11 +20,19 @@ export const router = createBrowserRouter([
       },
       {
         path: RoutePath.transactions,
-        element: <Transactions />,
+        element: (
+          <ProtectedRoute>
+            <Transactions />
+          </ProtectedRoute>
+        ),
       },
       {
         path: RoutePath.categories,
-        element: <Categories />,
+        element: (
+          <ProtectedRoute>
+            <Categories />
+          </ProtectedRoute>
+        ),
       },
       {
         path: RoutePath.auth,
